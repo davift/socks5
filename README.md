@@ -1,5 +1,7 @@
 # socks5
-A toy socks 5 server written in Python
 
+![Static Badge](https://img.shields.io/badge/Python-blue?style=social&logo=Python)
 
-https://rushter.com/blog/python-socks-server/
+A toy socks 5 server proxy.
+
+Fork of https://rushter.com/blog/python-socks-server/
