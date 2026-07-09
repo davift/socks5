@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import logging
+import os
 import select
 import socket
 import struct
@@ -8,14 +9,17 @@ from socketserver import ThreadingMixIn, TCPServer, StreamRequestHandler
 #logging.basicConfig(level=logging.DEBUG)
 SOCKS_VERSION = 5
 
+BIND_HOST = os.environ.get('SOCKS_HOST', '0.0.0.0')
+BIND_PORT = int(os.environ.get('SOCKS_PORT', '9011'))
+
 
 class ThreadingTCPServer(ThreadingMixIn, TCPServer):
     pass
 
 
 class SocksProxy(StreamRequestHandler):
-    username = 'useRName'
-    password = 'pasSWord'
+    username = os.environ.get('SOCKS_USER', 'useRName')
+    password = os.environ.get('SOCKS_PASS', 'pasSWord')
 
     def handle(self):
 #        logging.info('Accepting connection from %s:%s' % self.client_address)
@@ -146,7 +150,7 @@ class SocksProxy(StreamRequestHandler):
 
 try:
     if __name__ == '__main__':
-        with ThreadingTCPServer(('0.0.0.0', 9011), SocksProxy) as server:
+        with ThreadingTCPServer((BIND_HOST, BIND_PORT), SocksProxy) as server:
             server.serve_forever()
 except KeyboardInterrupt:
     print(' Interrupted')
